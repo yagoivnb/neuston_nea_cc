@@ -1,0 +1,21 @@
+# Raw and heavy datasets (Intended for Zenodo/OneDrive)
+*.nc
+*.xlsx
+*.csv
+*.RData
+*.rds
+
+# Python and Spyder environments/temporaries
+__pycache__/
+*.pyc
+.spyderproject/
+.spyproject/
+
+# R environments/temporaries
+.Rhistory
+.Rapp.history
+.Ruserdata
+
+# Local output directories
+/figures/*
+/tables/*
