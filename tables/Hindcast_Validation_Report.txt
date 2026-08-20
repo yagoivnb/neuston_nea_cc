@@ -1,0 +1,12 @@
+--- 1. RANDOM FOREST BASELINE VALIDATION (2014-2025) ---
+Out-Of-Bag (OOB) Accuracy: 50.0%
+Feature Importances:
+Predictor  Importance_RF_Pct
+  U10_MAM          29.937371
+  Ang_JUN          34.295481
+ U10_JASO          35.767148
+
+--- 2. HINDCAST VALIDATION (1940-2025) ---
+Total documented historical events (Archival Proxy): 18
+Events correctly classified as high risk (P >= 0.5): 14
+Empirical Validation Yield: 77.8%

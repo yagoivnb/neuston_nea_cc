@@ -1,21 +1,35 @@
-# Raw and heavy datasets (Intended for Zenodo/OneDrive)
+# ==========================================
+# 1. DATA & HEAVY BINARIES (Zenodo/OneDrive)
+# ==========================================
+data/raw/
+data/processed/
 *.nc
+*.parquet
 *.xlsx
 *.csv
-*.RData
 *.rds
+*RData
+RDataTmp/
 
-# Python and Spyder environments/temporaries
+# ==========================================
+# 2. PYTHON & IDE ENVIRONMENTS
+# ==========================================
 __pycache__/
 *.pyc
 .spyderproject/
 .spyproject/
+.ipynb_checkpoints/
 
-# R environments/temporaries
+# ==========================================
+# 3. R ENVIRONMENTS
+# ==========================================
+.Rproj.user/
 .Rhistory
 .Rapp.history
 .Ruserdata
 
-# Local output directories
-/figures/*
-/tables/*
+# ==========================================
+# 4. OUTPUTS (Filtro selectivo)
+# ==========================================
+# Ignorar todo el contenido de exploratorio
+figures/exploratory/
