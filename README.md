@@ -5,7 +5,7 @@
 [![Data: Pending](https://img.shields.io/badge/Data_Availability-Pending_Repository-lightgrey)](#)
 
 ## Overview
-This repository contains the complete analytical pipeline for investigating the spatial and temporal dynamics of neustonic organisms (*Physalia physalis* and *Velella velella*) in the Northeast Atlantic and the Bay of Biscay. 
+This repository contains the complete analytical pipeline for investigating the spatial and temporal dynamics of neustonic organisms in the Northeast Atlantic and the Bay of Biscay. 
 
 **Abstract Placeholder:** Mass stranding events of pelagic hydrozoans are increasingly reported along the European Atlantic coastlines. This study couples citizen science biological datasets with decadal atmospheric reanalysis to demonstrate how wind-driven advection regimes act as biological proxies for the progressive tropicalisation of the basin.
 
@@ -17,19 +17,19 @@ This repository contains the complete analytical pipeline for investigating the 
 The workflow is strictly sequential, progressing from biological data processing (R) to atmospheric forcing extraction and multi-decadal hindcasting (Python).
 
 ### Phase I: Biological Dynamics & Phenology (R)
-*   `00_data_preprocessing.R`: Cleaning and structuring of raw observational datasets (e.g., iNaturalist coordinates, standardising dates).
-*   `01_exploratory_analysis.R`: Initial spatial aggregations and basic phenological distributions.
-*   `02_qgam_modelling.R`: Fitting Quantile Generalised Additive Models (QGAM) to extract non-linear seasonal trends and shifts in stranding peaks.
-*   `03_biological_figures.R`: Rendering of spatial distribution maps and phenological density plots.
-*   `04_archival_integration.R`: Structuring historical newspaper stranding reports (1940-2012) across Aquitaine and northern Spain.
+*   `00_preprocess.R`: Cleaning and structuring of raw observational datasets (e.g., iNaturalist coordinates, standardising dates).
+*   `01_qgam_modelling.R`: Fitting Quantile Generalised Additive Models (QGAM) to extract non-linear seasonal trends and shifts in stranding peaks.
+*   `02_qgam_figures.R`: Rendering the spatio-temporal distribution plots.
+*   `03_regionaltrend_modelling.R`: Fitting Generalised Linear Models to extract the regional trend for each species.
+*   `04_regionaltrend_figures.R`: Rendering regional trend plots.
 
 ### Phase II: Climatic Forcing & Hindcast Modelling (Python)
-*   `05_era5_extraction.py`: API routines to download Copernicus ERA5 single-level wind ($U_{10}$, $V_{10}$) components.
-*   `06_temporal_aggregation.py`: Condensing hourly spatial matrices into daily and monthly climatic baselines.
-*   `07_spatial_mosaics.py`: Generating regional atmospheric transport vectors for key forcing windows.
-*   `08_hovmoller_climatology.py`: Latitude-time diagrams to track the meridional migration of the Azores High influence.
+*   `05_era5_hourly_download.py`: API routines to download Copernicus ERA5 single-level wind ($U_{10}$, $V_{10}$) components.
+*   `06_era5_temporal_aggregation.py`: Condensing hourly spatial matrices into daily and monthly climatic baselines.
+*   `07_wind_anomalies.py`: Generating regional atmospheric transport vectors for key forcing windows.
+*   `08_wind_figures.py`: Latitude-time diagrams to track the meridional migration of the Azores High influence.
 *   `09_machine_learning_analysis.py`: Training CART and Random Forest classifiers on the modern baseline (2014-2024) and projecting continuous advection probabilities across the historical matrix.
-*   `10_machine_learning_visualization.py`: Rendering deterministic tree topologies, Partial Dependence Plots (PDP), and the multi-decadal hindcast timeline.
+*   `10_machine_learning_figures.py`: Rendering deterministic tree topologies, Partial Dependence Plots (PDP), and the multi-decadal hindcast timeline.
 
 ---
 
