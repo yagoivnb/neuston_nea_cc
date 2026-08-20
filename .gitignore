@@ -27,6 +27,8 @@ __pycache__/
 .Rhistory
 .Rapp.history
 .Ruserdata
+*.Rproj
+.RDataTmp
 
 # ==========================================
 # 4. OUTPUTS (Filtro selectivo)
