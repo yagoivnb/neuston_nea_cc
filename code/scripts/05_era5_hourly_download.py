@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module: 05_era5_hourly_download.py
-Description: Download raw ERA5 hourly surface fields over the North Atlantic.
-Retrieves monthly NetCDF files from 1940 to 2025 to act as the foundational 
-dataset for subsequent daily and monthly temporal aggregations.
+# @file:    05_era5_hourly_download.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   ERA5nhourly surface fields download request
 """
 
 import cdsapi

@@ -1,10 +1,13 @@
 # ==============================================================================
-# Module: 00_preprocess.R
-# Description: Data preparation and standardisation of coastal neuston records.
-#   This script cleans raw iNaturalist observations from 'coastalsp_25_raw.csv'
-#   according to Darwin Core standards, applies spatial bounding boxes for the 
-#   North East Atlantic, mitigates observer bias, and implements quality control.
-#   Outputs are saved as compressed .rds files for subsequent modelling.
+# @file:    00_preprocess.r
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Data preparation and curation of coastal and neuston records 
+# This script cleans raw iNaturalist observations from 'coastalsp_25_raw.csv'
+# according to Darwin Core standards, applies spatial bounding boxes for the 
+# North East Atlantic, mitigates observer bias, and implements quality control.
+# Outputs are saved as compressed .rds files for subsequent modelling.
 # ==============================================================================
 
 # ------------------------------------------------------------------------------

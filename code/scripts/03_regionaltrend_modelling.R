@@ -1,8 +1,10 @@
 # ==============================================================================
-# Module: 03_regionaltrend_modelling.R
-# Description: Statistical pipeline to analyse temporal changes in occurrence 
-# proportions across latitudinal bands. Implements beta-binomial GLMM modelling 
-# to handle overdispersion, post-hoc statistical testing, and predictive gridding.
+# @file:    03_regionaltrend_modelling.r
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Core modelling pipeline fitting beta-binomial GLMMs
+# Temporal changes in occurrence proportions across latitudinal bands
 # Outputs are saved as static binary objects for visualisation.
 # ==============================================================================
 
@@ -16,7 +18,7 @@ library(here)
 # ------------------------------------------------------------------------------
 # 1. MASTER CONTROL BLOCK
 # ------------------------------------------------------------------------------
-TARGET_SPECIES <- "Physalia physalis"
+TARGET_SPECIES <- c("Physalia physalis")
 FOCAL_REGION   <- "Bay of Biscay"
 
 START_YEAR <- 2014
@@ -34,7 +36,6 @@ BAND_LABELS <- c(
 # ------------------------------------------------------------------------------
 # 2. DATA INGESTION & BINOMIAL PREPARATION
 # ------------------------------------------------------------------------------
-# here() dynamically locates the project root regardless of the working directory
 df <- readRDS(here("data", "processed", "eurobs_coastalsp_master.rds"))
 
 df_prep <- df |>
@@ -74,26 +75,48 @@ m_betabinom <- glmmTMB(
   data   = bands_mod
 )
 
-cat("\n[MODEL] Beta-Binomial GLMM Summary:\n")
-print(summary(m_betabinom))
-
 # ------------------------------------------------------------------------------
 # 4. POST-HOC TESTING & DIAGNOSTICS
 # ------------------------------------------------------------------------------
 band_trends <- emtrends(m_betabinom, specs = ~ lat_band_regional, var = "year_centered")
-
-cat("\n[POST-HOC] Pairwise comparisons of temporal slopes (Tukey-adjusted):\n")
-print(contrast(band_trends, method = "pairwise", adjust = "Tukey"))
-
-cat(sprintf("\n[POST-HOC] Directed comparisons vs %s (Holm-adjusted):\n", FOCAL_REGION))
-print(contrast(band_trends, method = "trt.vs.ctrl", ref = FOCAL_REGION, adjust = "Holm"))
 
 cat("\n[DIAGNOSTIC] Simulating DHARMa residuals for dispersion validation...\n")
 sim_res_betabinom <- simulateResiduals(m_betabinom, plot = FALSE)
 testDispersion(sim_res_betabinom)
 
 # ------------------------------------------------------------------------------
-# 5. PREDICTIVE GRIDDING & EXPORT
+# 5. STATISTICAL EXTRACTION & EXPORT
+# ------------------------------------------------------------------------------
+# 5.1 Extract Fixed Effects (Global Base Model)
+fixed_eff <- as.data.frame(summary(m_betabinom)$coefficients$cond) |>
+  tibble::rownames_to_column("Parameter") |>
+  rename(Estimate = Estimate, Std_Error = `Std. Error`, Z_ratio = `z value`, P_value = `Pr(>|z|)`) |>
+  mutate(Component = "Fixed Effects (Logit)") |>
+  select(Component, Parameter, Estimate, Std_Error, Z_ratio, P_value)
+
+# 5.2 Extract Regional Slopes (Marginal Trends)
+slopes_df <- as.data.frame(test(band_trends)) |>
+  rename(Parameter = lat_band_regional, Estimate = year_centered.trend, 
+         Std_Error = SE, Z_ratio = z.ratio, P_value = p.value) |>
+  mutate(Component = "Regional Slopes (emtrends)") |>
+  select(Component, Parameter, Estimate, Std_Error, Z_ratio, P_value)
+
+# 5.3 Extract Contrasts against Focal Region
+contrasts_df <- as.data.frame(contrast(band_trends, method = "trt.vs.ctrl", ref = FOCAL_REGION, adjust = "Holm")) |>
+  rename(Parameter = contrast, Estimate = estimate, 
+         Std_Error = SE, Z_ratio = z.ratio, P_value = p.value) |>
+  mutate(Component = sprintf("Contrasts vs %s (Holm-adj)", FOCAL_REGION)) |>
+  select(Component, Parameter, Estimate, Std_Error, Z_ratio, P_value)
+
+# Assemble Master Table
+master_stats <- bind_rows(fixed_eff, slopes_df, contrasts_df) |>
+  mutate(across(where(is.numeric), ~ round(.x, 4)))
+
+if (!dir.exists(here("tables"))) dir.create(here("tables"))
+write.csv(master_stats, here("tables", "03_regionaltrend_statistics.csv"), row.names = FALSE)
+
+# ------------------------------------------------------------------------------
+# 6. PREDICTIVE GRIDDING & BINARY EXPORT
 # ------------------------------------------------------------------------------
 pred_grid <- bands_mod |>
   distinct(lat_band_regional, year, year_centered, highlight) |>
@@ -108,9 +131,8 @@ pred_grid <- pred_grid |>
     upper = plogis(preds$fit + 1.96 * preds$se.fit)
   )
 
-# Save static objects for the figure generation script
 saveRDS(bands_mod, here("data", "processed", "regionaltrend_bands_mod.rds"))
 saveRDS(pred_grid, here("data", "processed", "regionaltrend_pred_grid.rds"))
 saveRDS(m_betabinom, here("data", "processed", "regionaltrend_model.rds"))
 
-cat("\n[SUCCESS] Modelling complete. Matrices exported to data/processed/.\n")
+cat(sprintf("\n[SUCCESS] %s modelling complete. Matrices and tabular stats exported.\n", TARGET_SPECIES))

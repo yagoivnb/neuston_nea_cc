@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Module: 07_wind_short_term_analysis.py
-Description: Analytical engine for short-term atmospheric forcing (2014-2025). 
-Performs spatial averaging for anomaly maps and 10-day temporal downsampling 
-for regional boxes. Exports clean datasets for the visualization pipeline.
+# @file:    07_wind_short_term_analysis.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Spatiotemporal analysis of atmospheric forcing
+Exports clean datasets for visualisation pipeline
 """
 
 import xarray as xr

@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
 """
-Global configuration module.
-This script defines absolute paths to manage data and code locally.
-The secondary hierarchy strictly follows: data, code, and figures.
-Heavy files stored in the data directories will be ignored by Git.
+# @file:    config.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Global configuration module
+This script defines absolute paths to manage data and code locally
+The secondary hierarchy strictly follows: data, code, and figures
+Heavy files stored in the data directories will be ignored by Git
 """
 
 from pathlib import Path

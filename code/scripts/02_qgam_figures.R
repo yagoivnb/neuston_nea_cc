@@ -1,9 +1,10 @@
 # ==============================================================================
-# Module: 02_qgam_figures.R
-# Description: Visualisation module for generating publication-ready multipanel 
-# plots (seasonal, historical, and biological Hovmöller diagrams).
-# Implements both composite mapped layouts and faceted layouts as per 
-# peer-review requirements.
+# @file:    02_qgam_figures.r
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Visualisation module for qGAMs plots
+# Seasonal, historical, and biological Hovmöller diagrams
 # ==============================================================================
 
 library(dplyr)

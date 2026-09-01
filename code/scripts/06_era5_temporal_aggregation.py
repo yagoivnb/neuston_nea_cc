@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module: 06_era5_temporal_aggregation.py
-Description: Ingests raw hourly ERA5 NetCDF files from data/raw/ and applies 
-temporal downsampling. Generates two specific datasets in data/processed/:
-  1. Monthly mean (1940-2025) for historical climatology.
-  2. Daily mean (2014-2025) for short-term forcing dynamics.
+# @file:    06_era5_temporal_aggregation.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Temporal downsampling to generating monthly and daily means of hourly ERA5
 """
 
 import xarray as xr

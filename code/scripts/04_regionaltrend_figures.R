@@ -1,8 +1,9 @@
 # ==============================================================================
-# Module: 04_regionaltrend_figures.R
-# Description: Visualisation module for regional latitudinal band trends.
-# Ingests pre-computed beta-binomial predictive grids to generate 
-# publication-grade multipanel plots.
+# @file:    04_regionaltrend_figures.r
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Visualisation module for regional latitudinal band GLMMs
 # ==============================================================================
 
 library(ggplot2)
@@ -16,7 +17,7 @@ library(here)
 # 1. MASTER CONTROL & DATA INGESTION
 # ------------------------------------------------------------------------------
 # Ensures aesthetic labels match the targeted species and region dynamically
-TARGET_SPECIES <- "Physalia physalis"
+TARGET_SPECIES <- c("Physalia physalis")
 FOCAL_REGION   <- "Bay of Biscay"
 START_YEAR     <- 2014
 

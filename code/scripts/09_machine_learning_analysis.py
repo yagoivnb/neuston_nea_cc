@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module: 09_machine_learning_analysis.py
-Description: Integrated Model Training & Historical Hindcast Inference Pipeline.
+# @file:    09_machine_learning_analysis.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Integrated model training and historical hindcast interference pipeline
 Extracts annual features (1940-2025), fits CART & Random Forest algorithms 
 on the modern baseline (2014-2025), and projects advection probabilities 
 across the multi-decadal historical record.

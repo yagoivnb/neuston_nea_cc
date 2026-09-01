@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module: 10_machine_learning_visualization.py
-Description: Generates high-resolution plots for phenomenological regime modelling.
-Produces the CART topology and feature importances panel, and the multi-decadal 
-Random Forest hindcast advection timeline (1940-2025). 
-Outputs are saved to the exploratory folder for manual vector editing.
+# @file:    10_machine_learning_visualization.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Visualisation module for CART and Random Forest analyses
 """
 
 import pandas as pd
@@ -157,3 +157,4 @@ plt.close(fig_rf)
 
 print(f"Historical hindcast plot exported to exploratory folder (SVG and PNG).")
 print("\n✅ Script 10 completed successfully.")
+

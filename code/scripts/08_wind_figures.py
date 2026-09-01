@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module: 08_wind_figrues.py
-Description: Visualization engine for short-term atmospheric forcing (2014-2025).
-Reads processed spatial means and 10-day regional databases to generate 
-the spatial mosaics and statistical panels identically to the original design.
+# @file:    08_wind_figrues.py
+# @author:  Yago Iván-Baragaño (ivanyago@uniovi.es)
+# @funding: Severo Ochoa Ph.D. program (Principado de Asturias, NAC-AT-PUB-ASV-2025 BP24-109)
+# @cite:    
+# @brief:   Visualisation of spatiotemporal atmospheric forcing
 """
 
 import xarray as xr
@@ -164,9 +165,12 @@ print(f"--- Mosaico de Hipótesis guardado en formato vectorial (SVG) en: {maste
 plt.close(fig)
 
 # =============================================================================
-# PART 2: UNIFIED STATISTICAL PANEL -> figures/exploratory
+# PART 2: UNIFIED STATISTICAL PANEL & STATS EXTRACTION -> exploratory & tables
 # =============================================================================
-print("\n--- 3. Generating Unified Statistical Panel ---")
+print("\n--- 3. Generating Unified Statistical Panel & Extracting Metrics ---")
+
+TABLES_DIR = REPO_ROOT / "tables"
+TABLES_DIR.mkdir(parents=True, exist_ok=True)
 
 titulos_col = ['Initial Push\n(Spring - MAM)', 'Transition Zone\n(June)', 'Coastal Barrier\n(Summer - JASO)']
 phase_labels = ['Absence\n(14-18)', 'Winter Surge\n(19-22)', 'Summer Surge\n(23-25)']
@@ -174,6 +178,9 @@ colores = ['#1f77b4', '#ff7f0e', '#d62728']
 
 fig_stat = plt.figure(figsize=(18, 16), dpi=300)
 gs_stat = fig_stat.add_gridspec(3, 3, hspace=0.35, wspace=0.25)
+
+# Lista para almacenar los resultados estadísticos
+stats_records = []
 
 for i, fase in enumerate(season_names):
     var_u = f'U10_{fase}'
@@ -190,54 +197,60 @@ for i, fase in enumerate(season_names):
     ang1 = df_sub[df_sub['Arribazón'] == 1][var_a].dropna()
     ang2 = df_sub[df_sub['Arribazón'] == 2][var_a].dropna()
 
-    # FILA 1: VIOLIN PLOTS
+    # FILA 1: VIOLIN PLOTS & KRUSKAL-WALLIS
     ax_v = fig_stat.add_subplot(gs_stat[0, i])
-    _, p_kw = stats.kruskal(g0_u, g1_u, g2_u)
+    stat_kw, p_kw = stats.kruskal(g0_u, g1_u, g2_u)
+    stats_records.append({'Season': fase, 'Variable': 'Zonal Wind (U10)', 'Test': 'Kruskal-Wallis (Global)', 'Comparison': '0 vs 1 vs 2', 'Statistic': stat_kw, 'P_value': p_kw})
     
-    sns.violinplot(data=df_sub, x='Arribazón', y=var_u, ax=ax_v, 
-                   hue='Arribazón', palette=colores, legend=False, inner='quartile')
-    sns.stripplot(data=df_sub, x='Arribazón', y=var_u, ax=ax_v, 
-                  color='black', alpha=0.3, size=3, jitter=True)
+    sns.violinplot(data=df_sub, x='Arribazón', y=var_u, ax=ax_v, hue='Arribazón', palette=colores, legend=False, inner='quartile')
+    sns.stripplot(data=df_sub, x='Arribazón', y=var_u, ax=ax_v, color='black', alpha=0.3, size=3, jitter=True)
     
-    ax_v.set_title(f"{titulos_col[i]}\n(Kruskal-Wallis p={p_kw:.3f})", fontweight='bold', fontsize=14)
+    ax_v.set_title(f"{titulos_col[i]}\n(K-W H={stat_kw:.1f}, p={p_kw:.3f})", fontweight='bold', fontsize=14)
     ax_v.set_xticks([0, 1, 2])
     ax_v.set_xticklabels(phase_labels)
     ax_v.set_xlabel('')
     ax_v.set_ylabel('Mean Zonal Wind [m/s]' if i == 0 else '')
     ax_v.grid(axis='y', linestyle='--', alpha=0.5)
 
-    # FILA 2: ECDF 
+    # FILA 2: ECDF & MANN-WHITNEY
     ax_cdf = fig_stat.add_subplot(gs_stat[1, i])
-    _, p01 = stats.mannwhitneyu(g0_u, g1_u, alternative='two-sided')
-    _, p02 = stats.mannwhitneyu(g0_u, g2_u, alternative='two-sided')
-    _, p12 = stats.mannwhitneyu(g1_u, g2_u, alternative='two-sided')
+    stat01_mw, p01_mw = stats.mannwhitneyu(g0_u, g1_u, alternative='two-sided')
+    stat02_mw, p02_mw = stats.mannwhitneyu(g0_u, g2_u, alternative='two-sided')
+    stat12_mw, p12_mw = stats.mannwhitneyu(g1_u, g2_u, alternative='two-sided')
+    
+    stats_records.extend([
+        {'Season': fase, 'Variable': 'Zonal Wind (U10)', 'Test': 'Mann-Whitney U', 'Comparison': 'Absence vs Winter (0-1)', 'Statistic': stat01_mw, 'P_value': p01_mw},
+        {'Season': fase, 'Variable': 'Zonal Wind (U10)', 'Test': 'Mann-Whitney U', 'Comparison': 'Absence vs Summer (0-2)', 'Statistic': stat02_mw, 'P_value': p02_mw},
+        {'Season': fase, 'Variable': 'Zonal Wind (U10)', 'Test': 'Mann-Whitney U', 'Comparison': 'Winter vs Summer (1-2)', 'Statistic': stat12_mw, 'P_value': p12_mw}
+    ])
     
     sns.ecdfplot(data=df_sub, x=var_u, hue='Arribazón', palette=colores, linewidth=2.5, ax=ax_cdf)
-    
-    ax_cdf.set_title(f"Pairwise M-W (p-vals):\n0vs1: {p01:.3f} | 0vs2: {p02:.3f} | 1vs2: {p12:.3f}", 
-                     fontsize=11, style='italic')
+    ax_cdf.set_title(f"Pairwise M-W (p-vals):\n0vs1: {p01_mw:.3f} | 0vs2: {p02_mw:.3f} | 1vs2: {p12_mw:.3f}", fontsize=11, style='italic')
     ax_cdf.set_xlabel('Mean Zonal Wind [m/s]')
     ax_cdf.grid(True, linestyle=':', alpha=0.7)
     
-    if ax_cdf.get_legend() is not None:
-        ax_cdf.get_legend().remove() 
+    if ax_cdf.get_legend() is not None: ax_cdf.get_legend().remove() 
         
     if i == 0:
         ax_cdf.set_ylabel('Cumulative Probability')
-        leyenda_lineas = [Line2D([0], [0], color=colores[0], lw=2.5),
-                          Line2D([0], [0], color=colores[1], lw=2.5),
-                          Line2D([0], [0], color=colores[2], lw=2.5)]
+        leyenda_lineas = [Line2D([0], [0], color=colores[0], lw=2.5), Line2D([0], [0], color=colores[1], lw=2.5), Line2D([0], [0], color=colores[2], lw=2.5)]
         ax_cdf.legend(leyenda_lineas, ['Absence', 'Winter', 'Summer'], title='Phase', loc='lower right')
     else:
         ax_cdf.set_ylabel('')
 
-    # FILA 3: ROSAS DE VIENTO
+    # FILA 3: ROSAS DE VIENTO & KUIPER
     ax_a = fig_stat.add_subplot(gs_stat[2, i], projection='polar')
     
     if len(ang0) > 2 and len(ang1) > 2 and len(ang2) > 2:
-        _, pk01 = kuiper_two(np.radians(ang0) % (2*np.pi), np.radians(ang1) % (2*np.pi))
-        _, pk02 = kuiper_two(np.radians(ang0) % (2*np.pi), np.radians(ang2) % (2*np.pi))
-        _, pk12 = kuiper_two(np.radians(ang1) % (2*np.pi), np.radians(ang2) % (2*np.pi))
+        stat01_k, pk01 = kuiper_two(np.radians(ang0) % (2*np.pi), np.radians(ang1) % (2*np.pi))
+        stat02_k, pk02 = kuiper_two(np.radians(ang0) % (2*np.pi), np.radians(ang2) % (2*np.pi))
+        stat12_k, pk12 = kuiper_two(np.radians(ang1) % (2*np.pi), np.radians(ang2) % (2*np.pi))
+        
+        stats_records.extend([
+            {'Season': fase, 'Variable': 'Wind Direction (Angle)', 'Test': 'Kuiper Two-Sample', 'Comparison': 'Absence vs Winter (0-1)', 'Statistic': stat01_k, 'P_value': pk01},
+            {'Season': fase, 'Variable': 'Wind Direction (Angle)', 'Test': 'Kuiper Two-Sample', 'Comparison': 'Absence vs Summer (0-2)', 'Statistic': stat02_k, 'P_value': pk02},
+            {'Season': fase, 'Variable': 'Wind Direction (Angle)', 'Test': 'Kuiper Two-Sample', 'Comparison': 'Winter vs Summer (1-2)', 'Statistic': stat12_k, 'P_value': pk12}
+        ])
         
         sectores = 30
         bins = np.arange(0, 361, sectores)
@@ -252,13 +265,20 @@ for i, fase in enumerate(season_names):
         ax_a.bar(theta,         freq1, width=width, color=colores[1], alpha=0.8, edgecolor='black', linewidth=0.5)
         ax_a.bar(theta + width, freq2, width=width, color=colores[2], alpha=0.8, edgecolor='black', linewidth=0.5)
         
-        ax_a.set_title(f"Pairwise Kuiper (p-vals):\n0vs1: {pk01:.3f} | 0vs2: {pk02:.3f} | 1vs2: {pk12:.3f}", 
-                       fontsize=11, style='italic', pad=15)
+        ax_a.set_title(f"Pairwise Kuiper (p-vals):\n0vs1: {pk01:.3f} | 0vs2: {pk02:.3f} | 1vs2: {pk12:.3f}", fontsize=11, style='italic', pad=15)
         
     ax_a.set_theta_zero_location('N'); ax_a.set_theta_direction(-1)
     ax_a.set_xticks(np.radians([0, 90, 180, 270]))
     ax_a.set_xticklabels(['N', 'E', 'S', 'W'], fontweight='bold')
     ax_a.set_yticks([])
+
+# Exportar tabla de estadísticos
+df_stats = pd.DataFrame(stats_records)
+df_stats['Statistic'] = df_stats['Statistic'].round(4)
+df_stats['P_value'] = df_stats['P_value'].round(4)
+stats_out_path = TABLES_DIR / "08_wind_phenology_statistics.csv"
+df_stats.to_csv(stats_out_path, index=False)
+print(f"--- Estadísticos guardados exitosamente en: {stats_out_path.name} ---")
 
 plt.suptitle("Statistical Dynamics: The Progressive Forcing Hypothesis", fontweight='bold', fontsize=22, y=0.96)
 
