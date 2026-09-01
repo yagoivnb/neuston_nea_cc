@@ -34,4 +34,4 @@ __pycache__/
 # 4. OUTPUTS (Filtro selectivo)
 # ==========================================
 figures/exploratory/
-tables
+tables/
