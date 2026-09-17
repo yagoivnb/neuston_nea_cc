@@ -14,7 +14,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # --- DIRECTORY ARCHITECTURE (ROBUST) ---
-REPO_ROOT = Path(r"C:\Users\yagoi\repositories\neuston_nea_cc")
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_PROC = REPO_ROOT / "data" / "processed"
 FIG_EXP = REPO_ROOT / "figures" / "exploratory"
 FIG_EXP.mkdir(parents=True, exist_ok=True)

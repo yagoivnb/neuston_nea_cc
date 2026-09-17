@@ -1,5 +1,5 @@
 # ==========================================
-# 1. DATA & HEAVY BINARIES (Zenodo/OneDrive)
+# 1. DATA & HEAVY BINARIES
 # ==========================================
 data/raw/
 data/processed/
@@ -8,8 +8,11 @@ data/processed/
 *.xlsx
 *.csv
 *.rds
-*RData
-RDataTmp/
+*.RData
+.RDataTmp/
+
+!data/raw/coastalsp_25_raw.csv
+!data/raw/azores_phys.csv
 
 # ==========================================
 # 2. PYTHON & IDE ENVIRONMENTS
@@ -27,11 +30,12 @@ __pycache__/
 .Rhistory
 .Rapp.history
 .Ruserdata
-*.Rproj
 .RDataTmp
+renv/library/
+renv/staging/
 
 # ==========================================
-# 4. OUTPUTS (Filtro selectivo)
+# 4. OUTPUTS (Figuras y Tablas excluidas)
 # ==========================================
-figures/exploratory/
+figures/
 tables/

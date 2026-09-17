@@ -10,12 +10,13 @@ library(ggplot2)
 library(lubridate)
 library(lmtest)
 library(ggpubr)
+library(here)
 
 # ------------------------------------------------------------------------------
 # 1. LOAD TARGET DATASET
 # ------------------------------------------------------------------------------
 # We utilise the Physalia dataset as the primary case study for assumption testing
-df <- readRDS("data/processed/eurobs_physalia.rds") |>
+df <- readRDS(here("data", "processed", "eurobs_physalia.rds")) |>
   mutate(
     yday        = yday(verbatimEventDate),
     decimalYear = decimal_date(verbatimEventDate)

@@ -13,35 +13,25 @@
 # ------------------------------------------------------------------------------
 # 0. SETUP AND DEPENDENCIES
 # ------------------------------------------------------------------------------
-required_packages <- c(
-  "bdc", "dplyr", "ggplot2", 
-  "rnaturalearth", "rnaturalearthdata", "readr"
-)
-
-for (pkg in required_packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
-}
-
 library(bdc)
 library(dplyr)
 library(ggplot2)
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(readr)
+library(here)
 
 set.seed(1234)
 
 # ------------------------------------------------------------------------------
 # 1. LOAD RAW DATASET
 # ------------------------------------------------------------------------------
-# The raw CSV must be placed in the data/raw/ directory before execution.
-raw_path <- "data/raw/coastalsp_25_raw.csv"
+raw_path <- here("data", "raw", "coastalsp_25_raw.csv")
 
 if (!file.exists(raw_path)) {
   stop("Raw data file not found. Ensure 'coastalsp_25_raw.csv' is in 'data/raw/'.")
 }
 
-# Direct ingestion of the raw dataset
 df <- read_csv(raw_path, show_col_types = FALSE)
 message("Initial raw records loaded: ", nrow(df))
 
@@ -134,7 +124,7 @@ diagnostic_plot <- ggplot() +
        x = "Longitude", y = "Latitude")
 
 # Save diagnostic map to exploratory figures directory
-ggsave("figures/exploratory/map_filtered_observations.png", plot = diagnostic_plot, 
+ggsave(here("figures", "exploratory", "map_filtered_observations.png"), plot = diagnostic_plot, 
        width = 8, height = 8, dpi = 300, bg = "white")
 
 # ------------------------------------------------------------------------------
@@ -153,9 +143,9 @@ neutral_taxa <- c(
 eurobs_neutralNeuston <- df_final |> filter(scientificName %in% neutral_taxa)
 
 # Export as .rds to preserve object structure and dates for downstream modelling
-saveRDS(df_final, "data/processed/eurobs_coastalsp_master.rds")
-saveRDS(eurobs_physalia, "data/processed/eurobs_physalia.rds")
-saveRDS(eurobs_velella, "data/processed/eurobs_velella.rds")
-saveRDS(eurobs_neutralNeuston, "data/processed/eurobs_neutralNeuston.rds")
+saveRDS(df_final, here("data", "processed", "eurobs_coastalsp_master.rds"))
+saveRDS(eurobs_physalia, here("data", "processed", "eurobs_physalia.rds"))
+saveRDS(eurobs_velella, here("data", "processed", "eurobs_velella.rds"))
+saveRDS(eurobs_neutralNeuston, here("data", "processed", "eurobs_neutralNeuston.rds"))
 
 message("Processing complete. Datasets successfully saved to 'data/processed/'.")

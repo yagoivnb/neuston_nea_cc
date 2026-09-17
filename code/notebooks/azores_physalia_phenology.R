@@ -8,15 +8,6 @@
 # ------------------------------------------------------------------------------
 # 0. SETUP AND DEPENDENCIES
 # ------------------------------------------------------------------------------
-required_packages <- c(
-  "bdc", "dplyr", "ggplot2", 
-  "readr", "lubridate", "here", "svglite"
-)
-
-for (pkg in required_packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
-}
-
 library(bdc)
 library(dplyr)
 library(ggplot2)

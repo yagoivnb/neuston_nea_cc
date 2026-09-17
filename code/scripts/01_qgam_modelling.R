@@ -8,11 +8,15 @@
 # Fits are saved as binary objects for subsequent visualisation 
 # ==============================================================================
 
+# ------------------------------------------------------------------------------
+# 0. SETUP AND DEPENDENCIES
+# ------------------------------------------------------------------------------
 library(dplyr)
 library(lubridate)
 library(mgcv)
 library(qgam)
 library(gratia)
+library(here)
 
 set.seed(1234)
 
@@ -107,9 +111,9 @@ run_species <- function(raw_df, species_label, ky_fixed, kt_fixed, year_min = YE
 # ------------------------------------------------------------------------------
 # 3. EXECUTION AND DATA EXPORT
 # ------------------------------------------------------------------------------
-eurobs_physalia       <- readRDS("data/processed/eurobs_physalia.rds")
-eurobs_velella        <- readRDS("data/processed/eurobs_velella.rds")
-eurobs_neutralNeuston <- readRDS("data/processed/eurobs_neutralNeuston.rds")
+eurobs_physalia       <- readRDS(here("data", "processed", "eurobs_physalia.rds"))
+eurobs_velella        <- readRDS(here("data", "processed", "eurobs_velella.rds"))
+eurobs_neutralNeuston <- readRDS(here("data", "processed", "eurobs_neutralNeuston.rds"))
 
 message("Data loaded successfully. Commencing model fitting...")
 
@@ -136,13 +140,13 @@ stats_table <- bind_rows(
 )
 
 # Create tables directory if it doesn't exist and write CSV
-if (!dir.exists("tables")) dir.create("tables")
-write.csv(stats_table, "tables/01_qgam_summary_statistics.csv", row.names = FALSE)
+if (!dir.exists(here("tables"))) dir.create(here("tables"))
+write.csv(stats_table, here("tables", "01_qgam_summary_statistics.csv"), row.names = FALSE)
 
 # Export standard binary data
-saveRDS(df_all, "data/processed/modelling_df_all.rds")
-saveRDS(effects_yday_all, "data/processed/modelling_effects_yday.rds")
-saveRDS(effects_year_all, "data/processed/modelling_effects_year.rds")
-saveRDS(list(res_physalia, res_velella, res_neutral), "data/processed/mqgam_models.rds")
+saveRDS(df_all, here("data", "processed", "modelling_df_all.rds"))
+saveRDS(effects_yday_all, here("data", "processed", "modelling_effects_yday.rds"))
+saveRDS(effects_year_all, here("data", "processed", "modelling_effects_year.rds"))
+saveRDS(list(res_physalia, res_velella, res_neutral), here("data", "processed", "mqgam_models.rds"))
 
 message("Modelling complete. Statistical table saved to 'tables/' and binaries to 'data/processed/'.")

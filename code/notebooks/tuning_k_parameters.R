@@ -5,13 +5,17 @@
 # seasonal smooths based on UBRE/GCV scores.
 # ==============================================================================
 
+# ------------------------------------------------------------------------------
+# 0. SETUP AND DEPENDENCIES
+# ------------------------------------------------------------------------------
 library(dplyr)
 library(lubridate)
 library(mgcv)
 library(qgam)
+library(here)
 
 # Load subset of processed data for testing
-df_physalia <- readRDS("data/processed/eurobs_physalia.rds") |>
+df_physalia <- readRDS(here("data", "processed", "eurobs_physalia.rds")) |>
   mutate(yday = yday(verbatimEventDate), decimalYear = decimal_date(verbatimEventDate))
 
 # Grid parameters

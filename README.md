@@ -1,4 +1,4 @@
-# Drifting sentinels: neuston strandings reveal the tropicalisation of Northeast Atlantic
+# Neuston strandings reveal _Physalia physalis_ as a sentinel of wind-driven tropicalisation
 
 [![Status: In Preparation](https://img.shields.io/badge/Status-In_Preparation-orange)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)

@@ -16,7 +16,7 @@ from pathlib import Path
 # 1. REPOSITORY ROOT PATH
 # =============================================================================
 # Absolute path to the local Git repository
-REPO_DIR = Path("C:/Users/yagoi/repositories/neuston_nea_cc")
+REPO_DIR = Path(__file__).resolve().parent.parent.parent
 
 # =============================================================================
 # 2. INTERNAL DIRECTORY STRUCTURE (Secondary & Tertiary levels)
