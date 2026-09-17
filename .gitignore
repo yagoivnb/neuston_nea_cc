@@ -9,7 +9,6 @@ data/processed/
 *.csv
 *.rds
 *.RData
-.RDataTmp/
 
 !data/raw/coastalsp_25_raw.csv
 !data/raw/azores_phys.csv
@@ -30,7 +29,7 @@ __pycache__/
 .Rhistory
 .Rapp.history
 .Ruserdata
-.RDataTmp
+.RDataTmp*
 renv/library/
 renv/staging/
 
