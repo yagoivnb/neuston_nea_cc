@@ -21,7 +21,7 @@ The repository is structured to guarantee exact computational reproducibility.
     *   `scripts/`: Core analytical scripts for statistical modelling (R) and machine learning/climatic extraction (Python).
     *   `notebooks/`: Supplementary R scripts and markdown notebooks for assumption testing, parameter tuning, and specific sub-analyses.
 *   `data/raw/`: Contains the essential primary matrices required for execution (`coastalsp_25_raw.csv`, `azores_phys.csv`). 
-*   `.Rprofile` & `renv/`: R-specific configuration files that automatically bootstrap the local package environment upon project initialization.
+*   `.Rprofile` & `renv/`: R-specific configuration files that automatically bootstrap the local package environment upon project initialisation.
 *   `renv.lock`: Deterministic lockfile tracking exact R package dependencies and versions.
 *   `environment.yml`: Conda configuration file containing the precise Python environment dependencies.
 *   `neuston_nea_cc.Rproj`: RStudio project configuration.
@@ -47,7 +47,7 @@ The `data/raw/` directory contains the foundational biological datasets extracte
 *   **`place_guess`**: Textual description or toponym of the location provided by the observer.
 *   **`scientific_name`**: Accepted binomial nomenclature of the observed organism (e.g., *Physalia physalis*).
 *   **`common_name`**: Vernacular name of the taxon (if recorded).
-*   **`iconic_taxon_name`**: Broad taxonomic grouping (e.g., Animalia, Mollusca) used for high-level ecological categorization.
+*   **`iconic_taxon_name`**: Broad taxonomic grouping (e.g., Animalia, Mollusca) used for high-level ecological categorisation.
 *   **`taxon_id`**: Unique taxonomic serial number from the iNaturalist taxonomic framework.
 
 *(Note: Full gridded atmospheric matrices are excluded from version control due to file size constraints, but reproducibility is guaranteed via the Phase II pipeline).*
@@ -58,7 +58,7 @@ The `data/raw/` directory contains the foundational biological datasets extracte
 The workflow is strictly sequential for the core models, followed by supplementary diagnostic notebooks.
 
 ### Phase I: Biological Dynamics & Phenology (R)
-*   `00_preprocess.R`: Cleans and structures raw observational datasets, standardizing temporal vectors and spatial coordinates.
+*   `00_preprocess.R`: Cleans and structures raw observational datasets, standardising temporal vectors and spatial coordinates.
 *   `01_qgam_modelling.R`: Fits Quantile Generalised Additive Models (QGAM) to extract non-linear seasonal trends and identify temporal shifts in stranding peaks.
 *   `02_qgam_figures.R`: Renders quantitative spatio-temporal distribution plots.
 *   `03_regionaltrend_modelling.R`: Fits Generalised Linear Models to extract regional incidence trends for each species.
@@ -69,25 +69,25 @@ The workflow is strictly sequential for the core models, followed by supplementa
 *   `06_era5_temporal_aggregation.py`: Condenses hourly spatial matrices into daily and monthly climatic baselines.
 *   `07_wind_anomalies.py`: Computes regional atmospheric transport vectors for key forcing windows.
 *   `08_wind_figures.py`: Generates latitude-time diagrams tracking the meridional migration of the Azores High influence.
-*   `09_machine_learning_analysis.py`: Trains CART and Random Forest classifiers on the modern baseline (2014-2024) to project continuous advection probabilities across historical periods.
+*   `09_machine_learning_analysis.py`: Trains CART and Random Forest classifiers on the modern baseline (2014-2025) to project continuous advection probabilities across historical periods.
 *   `10_machine_learning_figures.py`: Renders deterministic tree topologies, Partial Dependence Plots (PDP), and the final multi-decadal hindcast timeline.
 
 ### Supplementary Phase: Notebooks & Diagnostics
-This section contains independent scripts and notebooks utilized for assumption verification and specific visualizations:
+This section contains independent scripts and notebooks utilised for assumption verification and specific visualisations:
 *   `azores_physalia_phenology.R`: Phenological dynamics specifically isolated to the Azores control node.
 *   `exploratory_assumptions.R`: Diagnostic checks verifying statistical assumptions (e.g., homoscedasticity, normality) for the fitted models.
-*   `hovmoller_zonal_wind`: Notebook generating Hovmöller diagrams to visualize zonal wind anomalies.
-*   `Species_list`: Notebook synthesizing the taxonomic summary and raw observational counts.
+*   `hovmoller_zonal_wind`: Notebook generating Hovmöller diagrams to visualise North Atlantic zonal winds.
+*   `species_list`: Notebook synthesising the species used in the study, including both the target neuston species and the coastal reference species.
 *   `temporal_autocorrelation`: Notebook executing ACF/PACF analysis to detect temporal autocorrelation in stranding events.
-*   `tuning_k_parameters.R`: Optimization script for tuning the basis dimensions ($k$) of the splines used in the GAM/QGAM models.
+*   `tuning_k_parameters.R`: Optimisation script for tuning the basis dimensions ($k$) of the splines used in the GAM/QGAM models.
 
 ---
 
 ## 5. Execution & Reproducibility Protocol
-To replicate this study, clone the repository and initialize the exact computational environments.
+To replicate this study, clone the repository and initialise the exact computational environments.
 
 **1. R Environment (Phase I & Supplementary):**
-Open `neuston_nea_cc.Rproj` in RStudio. The `.Rprofile` will automatically detect the `renv` infrastructure. Execute the following command in the R console to synchronize the exact package dependencies:
+Open `neuston_nea_cc.Rproj` in RStudio. The `.Rprofile` will automatically detect the `renv` infrastructure. Execute the following command in the R console to synchronise the exact package dependencies:
 
     renv::restore()
 
@@ -97,7 +97,6 @@ Open a terminal in the repository root and build the isolated Conda environment 
     conda env create -f environment.yml
     conda activate neuston_env
 
-*(Note: Replace `neuston_env` with the exact name specified inside your `environment.yml` file if it differs).*
 
 **3. Execution Order:**
 Scripts from Phase I and II must be executed in absolute numerical order (`00` to `10`). Supplementary notebooks can be run independently after `01_qgam_modelling.R`.
