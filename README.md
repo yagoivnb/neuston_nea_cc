@@ -6,7 +6,7 @@
 [![DOI: Pending](https://img.shields.io/badge/DOI-Pending_Zenodo-lightgrey)](#)
 
 ## 1. Overview
-This repository contains the complete analytical pipeline for investigating the spatial and temporal dynamics of neustonic organisms in the Northeast Atlantic and the Bay of Biscay. 
+This repository contains the complete analytical pipeline and data for investigating the spatial and temporal dynamics of neustonic organisms in the Northeast Atlantic and the Bay of Biscay. 
 
 **Abstract:** This study investigates the tropicalisation of temperate seas by tracking neustonic organisms as biological sentinels. Coupling citizen-science records with atmospheric reanalysis (2014–2025), we applied QGAMs and machine learning algorithms (CART, Random Forest) to model the spatio-temporal dynamics of nine surface-drifting species. Results show that the high-windage hydrozoan *Physalia physalis* decoupled from the baseline neustonic community, driving unprecedented mass strandings in the Bay of Biscay since 2019. Furthermore, a multi-decadal hindcast (1940–2025) confirms these incursions are triggered by the poleward expansion of the Azores High and intensifying local westerlies, demonstrating how synoptic atmospheric restructuring directly dictates upper-ocean biological shifts.
 
@@ -17,8 +17,9 @@ This repository contains the complete analytical pipeline for investigating the 
 ## 2. Repository Architecture
 The repository is structured to guarantee exact computational reproducibility.
 
-*   `code/`: Core analytical scripts for statistical modelling (R) and machine learning/climatic extraction (Python).
-    *   `notebooks/` *(or exploratory/)*: Supplementary R scripts and markdown notebooks for assumption testing, parameter tuning, and specific sub-analyses.
+*   `code/`:
+    *   `scripts/`: Core analytical scripts for statistical modelling (R) and machine learning/climatic extraction (Python).
+    *   `notebooks/`: Supplementary R scripts and markdown notebooks for assumption testing, parameter tuning, and specific sub-analyses.
 *   `data/raw/`: Contains the essential primary matrices required for execution (`coastalsp_25_raw.csv`, `azores_phys.csv`). 
 *   `.Rprofile` & `renv/`: R-specific configuration files that automatically bootstrap the local package environment upon project initialization.
 *   `renv.lock`: Deterministic lockfile tracking exact R package dependencies and versions.
