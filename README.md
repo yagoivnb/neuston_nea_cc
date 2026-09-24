@@ -3,7 +3,7 @@
 [![Status: In Preparation](https://img.shields.io/badge/Status-In_Preparation-orange)](#)
 [![Code License: MIT](https://img.shields.io/badge/Code_License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Data License: CC BY 4.0](https://img.shields.io/badge/Data_License-CC_BY_4.0-green.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![DOI: Pending](https://img.shields.io/badge/DOI-Pending_Zenodo-lightgrey)](#)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22938845.svg)](https://doi.org/10.5281/zenodo.22938845)
 
 ## 1. Overview
 This repository contains the complete analytical pipeline and data for investigating the spatial and temporal dynamics of neustonic organisms in the Northeast Atlantic and the Bay of Biscay. 
