@@ -1,4 +1,4 @@
-name: base
+name: neuston_env
 channels:
   - defaults
 dependencies:
@@ -36,4 +36,4 @@ dependencies:
   - bottleneck
   - cartopy
   - statsmodels
-prefix: C:\Users\yagoi\anaconda3
+
