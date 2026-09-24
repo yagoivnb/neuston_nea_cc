@@ -1,17 +1,13 @@
 # ==========================================
 # 1. DATA & HEAVY BINARIES
 # ==========================================
-data/raw/
 data/processed/
 *.nc
 *.parquet
 *.xlsx
-*.csv
 *.rds
 *.RData
 
-!data/raw/coastalsp_25_raw.csv
-!data/raw/azores_phys.csv
 
 # ==========================================
 # 2. PYTHON & IDE ENVIRONMENTS
