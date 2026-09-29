@@ -84,7 +84,7 @@ html_content = """
 </style>
 </head>
 <body>
-<h1>Set of recorded species: neuston (bold) and baseline </h1>
+<h1><strong>Table S1. Set of recorded species.</strong> Target neuston is shown in bold, the baseline species are listed beneath them.</h1>
 <table>
     <thead>
         <tr>
